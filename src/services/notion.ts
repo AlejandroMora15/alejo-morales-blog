@@ -26,8 +26,10 @@ export const getPosts = async () => {
       description: page.properties.description.rich_text[0].plain_text,
       created_at: page.properties.created_at.created_time,
       cover: page.cover.external.url,
+      tags: page.properties.tags.multi_select.map((tag: any) => ({name: tag.name, color: tag.color})),
     }
   })
+  
   return posts
 }
 

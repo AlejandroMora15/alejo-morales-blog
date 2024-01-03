@@ -2,20 +2,29 @@
 import Layout from '../../layouts/Layout.astro';
 import { getPosts } from '../../services/notion';
 import { Image } from 'astro:assets';
+import { type IPost } from '../../types';
 
-const posts = await getPosts();
+const posts: IPost[] = await getPosts();
+console.log(posts);
 ---
 
 <Layout title='Posts'>
   <h1>Artículos</h1>
   <ul>
     {
-      posts.map(({ cover, id, title, created_at, description }) => (
-        <li>
+      posts.map(({ cover, id, title, created_at, description, tags }) => (
+        <li class='flex flex-col gap-4'>
           <Image src={cover} alt={title} width={200} height={300} />
           <h2>{title}</h2>
           <p>{description}</p>
           <time>{created_at}</time>
+          {tags.map(({ name, color }) => (
+            <span
+              class={`bg-${color}-100 text-${color}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded w-fit`}
+            >
+              {name}
+            </span>
+          ))}
           <a href={`/post/${id}`}>Leer</a>
         </li>
       ))

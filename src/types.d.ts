@@ -33,3 +33,14 @@ interface BlockImage {
     url: string
   }
 }
+
+// ----------------------------------------------
+
+export interface IPost {
+  id: string
+  title: string
+  description: string
+  created_at: string
+  cover: string
+  tags: {name: string, color: string}[]
+}
