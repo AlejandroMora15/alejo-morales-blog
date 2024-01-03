@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getPosts } from '../../services/notion';
+import { Image } from 'astro:assets';
+
+const posts = await getPosts();
+---
+
+<Layout title='Posts'>
+  <h1>Artículos</h1>
+  <ul>
+    {
+      posts.map(({ cover, id, title, created_at, description }) => (
+        <li>
+          <Image src={cover} alt={title} width={200} height={300} />
+          <h2>{title}</h2>
+          <p>{description}</p>
+          <time>{created_at}</time>
+          <a href={`/post/${id}`}>Leer</a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>

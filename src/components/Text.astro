@@ -1,0 +1,45 @@
+---
+import type { RichText } from '../types';
+
+interface Props {
+  text: RichText[];
+}
+
+const { text } = Astro.props;
+---
+
+<>
+  {
+    text.map(({ annotations, plain_text, href }) => {
+      let component = <> {plain_text} </>;
+      if (annotations.bold) {
+        component = <b>{component}</b>;
+      }
+      if (annotations.italic) {
+        component = <i>{component}</i>;
+      }
+      if (annotations.strikethrough) {
+        component = <s>{component}</s>;
+      }
+      if (annotations.underline) {
+        component = <u>{component}</u>;
+      }
+      if (href) {
+        component = (
+          <a
+            class='
+              text-[#8c52ff] hover:text-[#b18cfc] 
+              underline decoration-[#8c52ff] hover:decoration-[#b18cfc]
+            '
+            href={href}
+            rel='noopener noreferrer'
+            target='_blank'
+          >
+            {component}
+          </a>
+        );
+      }
+      return component;
+    })
+  }
+</>

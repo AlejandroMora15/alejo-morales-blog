@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getBlockById, getPostsIds } from '../../services/notion';
+import H1 from '../../components/H1.astro';
+import P from '../../components/P.astro';
+import Code from '../../components/Code.astro';
+import Text from '../../components/Text.astro';
+import type { Block } from '../../types';
+
+const { id } = Astro.params;
+
+const block = await getBlockById(id);
+console.log(block);
+
+export const getStaticPaths = async () => {
+  const ids = await getPostsIds();
+  return ids;
+};
+---
+
+<Layout title={id}>
+  {
+    block.map((segment: Block) => {
+      const { type } = segment;
+      switch (type) {
+        case 'heading_1':
+          return (
+            <H1>
+              <Text text={segment.heading_1!.rich_text} />{' '}
+            </H1>
+          );
+        case 'paragraph':
+          return (
+            <P>
+              <Text text={segment.paragraph!.rich_text} />{' '}
+            </P>
+          );
+        case 'code':
+          return (
+            <Code
+              language={segment.code!.language}
+              code={segment.code!.rich_text[0].plain_text}
+            />
+          );
+      }
+    })
+  }
+</Layout>

@@ -1,0 +1,15 @@
+---
+import type { RichText } from '../types';
+interface Props {
+  code: string;
+  language: string;
+}
+
+const { code, language } = Astro.props;
+console.log(language);
+---
+
+<pre
+  class='language-js'>
+<code class='language-js shadow-md text-xs sm:text-sm inline-flex text-left items-center bg-gray-800 text-white rounded-lg p-4 pl-6 w-full'>{code}</code>
+</pre>
