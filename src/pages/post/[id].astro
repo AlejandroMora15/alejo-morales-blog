@@ -2,15 +2,18 @@
 import Layout from '../../layouts/Layout.astro';
 import { getBlockById, getPostsIds } from '../../services/notion';
 import H1 from '../../components/H1.astro';
+import H2 from '../../components/H2.astro';
 import P from '../../components/P.astro';
 import Code from '../../components/Code.astro';
 import Text from '../../components/Text.astro';
 import type { Block } from '../../types';
+import BlockImage from '../../components/BlockImage.astro';
 
 const { id } = Astro.params;
 
+if (!id) return Astro.redirect('/');
+
 const block = await getBlockById(id);
-console.log(block);
 
 export const getStaticPaths = async () => {
   const ids = await getPostsIds();
@@ -29,6 +32,12 @@ export const getStaticPaths = async () => {
               <Text text={segment.heading_1!.rich_text} />{' '}
             </H1>
           );
+        case 'heading_2':
+          return (
+            <H2>
+              <Text text={segment.heading_2!.rich_text} />{' '}
+            </H2>
+          );
         case 'paragraph':
           return (
             <P>
@@ -36,11 +45,17 @@ export const getStaticPaths = async () => {
             </P>
           );
         case 'code':
+          return <Code code={segment.code!.rich_text[0].plain_text} />;
+        case 'image':
           return (
-            <Code
-              language={segment.code!.language}
-              code={segment.code!.rich_text[0].plain_text}
-            />
+            <BlockImage
+              alt={segment
+                .image!.caption.map((caption) => caption.plain_text)
+                .join(' ')}
+              src={segment.image!.external.url}
+            >
+              <Text text={segment.image!.caption} />
+            </BlockImage>
           );
       }
     })

@@ -2,11 +2,13 @@ export interface Block {
   id: string
   type: BlockType
   heading_1?: { rich_text: RichText[] }
+  heading_2?: { rich_text: RichText[] }
   paragraph?: { rich_text: RichText[] }
   code?: CodeText
+  image?: BlockImage
 }
 
-type BlockType = 'heading_1' | 'paragraph' | 'code'
+type BlockType = 'heading_1' | 'heading_2' | 'paragraph' | 'code' | 'image' 
 
 export interface RichText {
  plain_text: string
@@ -23,4 +25,11 @@ export interface RichText {
 interface CodeText {
   language: string
   rich_text: RichText[]
+}
+
+interface BlockImage {
+  caption: RichText[]
+  external: {
+    url: string
+  }
 }
