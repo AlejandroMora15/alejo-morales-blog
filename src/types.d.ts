@@ -8,7 +8,7 @@ export interface Block {
   image?: BlockImage
 }
 
-type BlockType = 'heading_1' | 'heading_2' | 'paragraph' | 'code' | 'image' 
+type BlockType = 'heading_1' | 'heading_2' | 'heading_3' | 'paragraph' | 'code' | 'image' 
 
 export interface RichText {
  plain_text: string
@@ -43,4 +43,5 @@ export interface IPost {
   created_at: string
   cover: string
   tags: {name: string, color: string}[]
+  status: 'Próximamente' | 'Disponible'
 }

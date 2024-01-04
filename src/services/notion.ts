@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client"
 import type { Block } from "../types"
+import { formatDate } from "../utils"
 
 const notion = new Client({
   auth: import.meta.env.NOTION_API_KEY,
@@ -24,12 +25,13 @@ export const getPosts = async () => {
       id: page.id,
       title: page.properties.title.title[0].plain_text,
       description: page.properties.description.rich_text[0].plain_text,
-      created_at: page.properties.created_at.created_time,
+      created_at: formatDate(page.properties.created_at.created_time),
       cover: page.cover.external.url,
+      status: page.properties.status.status.name,
       tags: page.properties.tags.multi_select.map((tag: any) => ({name: tag.name, color: tag.color})),
     }
   })
-  
+
   return posts
 }
 

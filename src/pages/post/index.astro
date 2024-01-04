@@ -5,27 +5,34 @@ import { Image } from 'astro:assets';
 import { type IPost } from '../../types';
 
 const posts: IPost[] = await getPosts();
-console.log(posts);
 ---
 
 <Layout title='Posts'>
   <h1>Artículos</h1>
-  <ul>
+  <ul class='list-none'>
     {
       posts.map(({ cover, id, title, created_at, description, tags }) => (
-        <li class='flex flex-col gap-4'>
-          <Image src={cover} alt={title} width={200} height={300} />
-          <h2>{title}</h2>
-          <p>{description}</p>
-          <time>{created_at}</time>
-          {tags.map(({ name, color }) => (
-            <span
-              class={`bg-${color}-100 text-${color}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded w-fit`}
-            >
-              {name}
-            </span>
-          ))}
-          <a href={`/post/${id}`}>Leer</a>
+        <li class='flex gap-4 shadow-md hover:shadow-lg rounded-lg my-10 cursor-pointer transition-shadow ease-in-out'>
+          <Image
+            src={cover}
+            alt={title}
+            width={300}
+            height={170}
+            class='rounded-lg min-w-[300px]'
+          />
+          <div>
+            <h2>{title}</h2>
+            <p>{description}</p>
+            <time>{created_at}</time>
+            {tags.map(({ name, color }) => (
+              <span
+                class={`bg-${color}-100 text-${color}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded w-fit`}
+              >
+                {name}
+              </span>
+            ))}
+            <a href={`/post/${id}`}>Leer</a>
+          </div>
         </li>
       ))
     }
