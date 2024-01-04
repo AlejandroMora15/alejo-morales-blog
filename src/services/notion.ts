@@ -12,6 +12,12 @@ export const getPosts = async () => {
   //const databaseId = import.meta.env.NOTION_DATABASE_ID
   const response = await notion.databases.query({
     database_id,
+    filter: {
+      property: 'status',
+      status: {
+        equals: 'Disponible',
+      },
+    },
     sorts: [
       {
         property: 'created_at',
