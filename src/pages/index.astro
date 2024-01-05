@@ -1,7 +1,93 @@
 ---
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import { getMainPosts } from '../services/notion';
+import type { IPost } from '../types';
+import H2 from '../components/H2.astro';
+
+const posts: IPost[] = await getMainPosts();
+const initialPost = posts[0];
+const restPosts = posts.slice(1, 4);
 ---
 
-<Layout title='Welcome to Astro.'>
-  <h1>Welcome to <span>Astro</span></h1>
+<Layout title='Alejo Morales - Blog'>
+  <section class='h-screen w-full
+  flex flex-col justify-center'>
+    <h1 class='pb-2 font-semibold text-3xl text-zinc-800'>
+      Software, Ingeniería y Programación web
+    </h1>
+    <h2 class='pb-14 text-zinc-700 text-lg'>By Ing. Alejandro Morales Ríos</h2>
+    <div class='flex flex-col gap-6'>
+      <div class='flex'>
+        <div
+          class='flex flex-col items-center lg:items-stretch lg:flex-row w-full gap-6'
+        >
+          <a
+            href={`/post/${initialPost.id}`}
+            class='flex-1 rounded-xl cursor-pointer
+            shadow-md hover:shadow-xl transition-all ease-in
+            w-[400px]'
+          >
+            <Image
+              class='rounded-t-xl w-full'
+              src={initialPost.cover}
+              alt='Post principal'
+              height={300}
+              width={400}
+            />
+            <section class='p-4 bg-white rounded-b-xl flex flex-col gap-4'>
+              <h2 class='text-2xl text-zinc-700 font-semibold'>
+                {initialPost.title}
+              </h2>
+              <div>
+                {
+                  initialPost.tags.map(({ color, name }) => (
+                    <span
+                      class={`bg-${color}-100 text-${color}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded w-fit`}
+                    >
+                      {name}
+                    </span>
+                  ))
+                }
+              </div>
+              <p class='text-zinc-600 text-sm' style='text-wrap: pretty;'>
+                {initialPost.description}
+              </p>
+            </section>
+          </a>
+          <ul class='flex-1 list-none flex flex-col gap-4 justify-evenly'>
+            {
+              restPosts.map(({ title, tags, id }) => (
+                <li>
+                  <a
+                    class='p-4 flex-1 flex flex-col gap-2 rounded-xl shadow-md hover:shadow-xl bg-white cursor-pointer transition-all ease-in'
+                    href={`/post/${id}`}
+                  >
+                    <h3 class='text-zinc-700 text-lg font-semibold'>{title}</h3>
+                    <div>
+                      {tags.map(({ color, name }) => (
+                        <span
+                          class={`bg-${color}-100 text-${color}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded w-fit`}
+                        >
+                          {name}
+                        </span>
+                      ))}
+                    </div>
+                  </a>
+                </li>
+              ))
+            }
+            <a href='/post'>
+              <p
+                class='text-sm cursor-pointer text-right text-[#8c52ff] hover:text-[#b18cfc] transition-colors ease-in'
+              >
+                Ver anteriores
+              </p>
+            </a>
+          </ul>
+        </div>
+      </div>
+      <div class='flex bg-blue-200'>Videos</div>
+    </div>
+  </section>
 </Layout>

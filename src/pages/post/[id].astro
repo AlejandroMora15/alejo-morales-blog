@@ -1,5 +1,4 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import { getBlockById, getPostsIds } from '../../services/notion';
 import H1 from '../../components/H1.astro';
 import H2 from '../../components/H2.astro';
@@ -9,6 +8,7 @@ import Text from '../../components/Text.astro';
 import type { Block } from '../../types';
 import BlockImage from '../../components/BlockImage.astro';
 import H3 from '../../components/H3.astro';
+import PostLayout from '../../layouts/PostLayout.astro';
 
 const { id } = Astro.params;
 
@@ -22,49 +22,51 @@ export const getStaticPaths = async () => {
 };
 ---
 
-<Layout title={id}>
-  {
-    block.map((segment: Block) => {
-      const { type } = segment;
-      switch (type) {
-        case 'heading_1':
-          return (
-            <H1>
-              <Text text={segment.heading_1!.rich_text} />{' '}
-            </H1>
-          );
-        case 'heading_2':
-          return (
-            <H2>
-              <Text text={segment.heading_2!.rich_text} />{' '}
-            </H2>
-          );
-        case 'heading_3':
-          return (
-            <H3>
-              <Text text={segment.heading_2!.rich_text} />{' '}
-            </H3>
-          );
-        case 'paragraph':
-          return (
-            <P>
-              <Text text={segment.paragraph!.rich_text} />{' '}
-            </P>
-          );
-        case 'code':
-          return <Code code={segment.code!.rich_text[0].plain_text} />;
-        case 'image':
-          return (
-            <BlockImage
-              alt={segment
-                .image!.caption.map((caption) => caption.plain_text)
-                .join(' ')}
-              src={segment.image!.external.url}
-            >
-              <Text text={segment.image!.caption} />
-            </BlockImage>
-          );
-      }
-    })
-  }
-</Layout>
+<PostLayout title={id}>
+  <article>
+    {
+      block.map((segment: Block) => {
+        const { type } = segment;
+        switch (type) {
+          case 'heading_1':
+            return (
+              <H1>
+                <Text text={segment.heading_1!.rich_text} />{' '}
+              </H1>
+            );
+          case 'heading_2':
+            return (
+              <H2>
+                <Text text={segment.heading_2!.rich_text} />{' '}
+              </H2>
+            );
+          case 'heading_3':
+            return (
+              <H3>
+                <Text text={segment.heading_2!.rich_text} />{' '}
+              </H3>
+            );
+          case 'paragraph':
+            return (
+              <P>
+                <Text text={segment.paragraph!.rich_text} />{' '}
+              </P>
+            );
+          case 'code':
+            return <Code code={segment.code!.rich_text[0].plain_text} />;
+          case 'image':
+            return (
+              <BlockImage
+                alt={segment
+                  .image!.caption.map((caption) => caption.plain_text)
+                  .join(' ')}
+                src={segment.image!.external.url}
+              >
+                <Text text={segment.image!.caption} />
+              </BlockImage>
+            );
+        }
+      })
+    }
+  </article>
+</PostLayout>

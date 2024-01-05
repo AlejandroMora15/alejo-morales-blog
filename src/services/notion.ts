@@ -41,6 +41,40 @@ export const getPosts = async () => {
   return posts
 }
 
+export const getMainPosts = async () => {
+  //const databaseId = import.meta.env.NOTION_DATABASE_ID
+  const response = await notion.databases.query({
+    database_id,
+    page_size: 4,
+    filter: {
+      property: 'status',
+      status: {
+        equals: 'Disponible',
+      },
+    },
+    sorts: [
+      {
+        property: 'created_at',
+        direction: 'descending',
+      },
+    ],
+  })
+
+  const posts = response.results.map((page: any) => {
+    return {
+      id: page.id,
+      title: page.properties.title.title[0].plain_text,
+      description: page.properties.description.rich_text[0].plain_text,
+      created_at: formatDate(page.properties.created_at.created_time),
+      cover: page.cover.external.url,
+      status: page.properties.status.status.name,
+      tags: page.properties.tags.multi_select.map((tag: any) => ({name: tag.name, color: tag.color})),
+    }
+  })
+
+  return posts
+}
+
 export const getPostsIds = async () => {
   const response = await notion.databases.query({ database_id })
   const ids = response.results.map((page: any) => {
