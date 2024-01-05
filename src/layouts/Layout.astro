@@ -1,6 +1,7 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
 import Header from '../components/Header.astro';
+import '@fontsource/inter';
 interface Props {
   title: string;
 }
@@ -25,14 +26,14 @@ const { title } = Astro.props;
       <div
         class='min-h-screen bg-white
           mx-0 md:mx-20 lg:mx-40
-          px-10 md:px-24 lg:px-36'
+          px-6 md:px-24 lg:px-36'
       >
         <slot />
       </div>
     </main>
     <style is:global>
       html {
-        font-family: system-ui, sans-serif;
+        font-family: 'Inter', system-ui, sans-serif;
         color-scheme: light;
         height: 100%;
       }

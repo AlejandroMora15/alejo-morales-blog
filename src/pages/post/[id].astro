@@ -22,7 +22,7 @@ export const getStaticPaths = async () => {
 };
 ---
 
-<PostLayout title={id}>
+<PostLayout title={block[0].heading_1?.rich_text[0].plain_text || id}>
   <article>
     {
       block.map((segment: Block) => {

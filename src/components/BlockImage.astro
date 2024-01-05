@@ -9,8 +9,14 @@ const { src, alt } = Astro.props;
 ---
 
 <figure>
-  <Image src={src} alt={alt} width={400} height={400} class='w-full h-auto' />
-  <figcaption class='text-sm text-zinc-500'>
+  <Image
+    src={src}
+    alt={alt}
+    width={400}
+    height={400}
+    class='w-full h-auto shadow-sm rounded-sm'
+  />
+  <figcaption class='mt-1 text-xs text-zinc-500 text-center'>
     <slot />
   </figcaption>
 </figure>
